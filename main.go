@@ -5,8 +5,12 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
 	"github.com/Ebentim/finbolt-user-service/controllers"
+	"github.com/Ebentim/finbolt-user-service/services"
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
@@ -56,7 +60,30 @@ func main() {
 	r.HandleFunc("/", controllers.ListAllUsers(db)).Methods("GET")
 	r.HandleFunc("/api/v1/get_user", controllers.LoginUser(db)).Methods("POST")
 
-	c := CorsMiddleware()
+	c := services.CorsMiddleware()
 	handler := c.Handler(r)
-	http.ListenAndServe(PORT, handler)
+
+	srv := &http.Server{
+		Addr:    PORT,
+		Handler: handler,
+	}
+
+	// Run server in a goroutine
+	go func() {
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("Server error: %v", err)
+		}
+	}()
+
+	// Wait for interrupt signal
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
+	<-stop
+
+	// Graceful shutdown
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := srv.Shutdown(ctx); err != nil {
+		log.Printf("Error during server shutdown: %v", err)
+	}
 }

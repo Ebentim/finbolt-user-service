@@ -26,3 +26,25 @@ Follow these instructions to set up and run the web server on your local machine
     go run main.go
 ```
 Open your web browser and navigate to http://localhost:5080 to see the web server in action.
+
+### TODO
+
+1. Security
+    
+        - Verify user tokens with firebase admin
+        - Encrypt user data
+
+2. Storage
+
+        - Change image storage from base64 to a more efficient less memory intensive format
+        - Add other data table as needed e.g, personalized currriculum forcasting, simulation results etc
+        -role based learning
+        -Categorize transactions intelligently using ai (Obtain from Learning Service)
+
+        
+
+3. Business
+
+        - Ai for daily flash cards
+        - Cashing
+        - Scaleling

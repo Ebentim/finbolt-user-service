@@ -1,4 +1,6 @@
-package models
+package db_tables
+
+import "github.com/Ebentim/finbolt-user-service/db_tables"
 
 type User_Account struct {
 	Uid             string   `bson:"uid" json:"uid"`
@@ -8,5 +10,5 @@ type User_Account struct {
 	Onboarded       bool     `bson:"onboarded" json:"onboarded"`
 	Login_provider  string   `bson:"login_provider" json:"login_provider"`
 	User_role       []string `bson:"user_role" json:"user_role"`
-	TimeStamps
+	db_tables.TimeStamps
 }

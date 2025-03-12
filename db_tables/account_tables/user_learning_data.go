@@ -1,4 +1,6 @@
-package models
+package db_tables
+
+import "github.com/Ebentim/finbolt-user-service/db_tables"
 
 type Topic struct {
 	Topic_id string `bson:"topic_id"`
@@ -34,5 +36,5 @@ type User_learning_data struct {
 	Saved_courses     []SavedCourses    `bson:"saved_courses"`
 	Suspended_courses []SuspendedCourse `bson:"suspended_courses"`
 	Communities       []string          `bson:"communities"`
-	TimeStamps
+	db_tables.TimeStamps
 }
